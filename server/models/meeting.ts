@@ -19,7 +19,7 @@ Meeting.init({
     type: DataTypes.DATE,
     allowNull: false
   },
-  custId: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
 
@@ -36,7 +36,7 @@ Meeting.init({
     tableName: 'meetings',
   });
 
-Meeting.belongsTo(User, { foreignKey: 'custId' });
+Meeting.belongsTo(User, { foreignKey: 'userId' });
 Meeting.belongsTo(Service, { foreignKey: 'serviceId' });
 export { Meeting };
 
