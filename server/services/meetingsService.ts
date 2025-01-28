@@ -103,3 +103,15 @@ export async function addMeeting(newMeeting: Meeting) {
     return result;
   
   }
+  export async function deleteMeeting(MeetingId: number) {
+
+    const meeting = await Meeting.findByPk(MeetingId);
+
+    if (!meeting) {
+        throw new CustomError('Meeting not found', 404);
+    }
+
+    await meeting.destroy();
+    return `meeting ${MeetingId} deleted successfully`
+
+}

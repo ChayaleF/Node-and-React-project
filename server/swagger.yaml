@@ -379,6 +379,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Meeting'
+
+  /meetings/deleteMeetingById/{MeetingId}:
+    delete:
+      summary: Delete a meeting by ID
+      tags:
+        - Meetings
+      parameters:
+        - name: MeetingId
+          in: path
+          required: true
+          description: The ID of the meeting to delete
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '200':
+          description: Meeting deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Meeting deleted successfully"
+        '400':
+          description: Invalid request or missing parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid Meeting ID"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error"
+
 components:
   schemas:
     User:

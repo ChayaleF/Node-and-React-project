@@ -1,4 +1,4 @@
-import { addMeeting, getMeetings, updateMeeting } from "../services/meetingsService";
+import { addMeeting, deleteMeeting, getMeetings, updateMeeting } from "../services/meetingsService";
 import { Request, Response } from 'express';
 import {  CustomError } from "../errors/CustomError"
 
@@ -44,5 +44,19 @@ router.put('/updateMeeting/:meetingId', async (req: Request, res: Response) => {
           res.status(500).send('Internal Server Error');
       }
   }
+});
+
+router.delete('/deleteMeetingById/:MeetingId', async (req: Request, res: Response) => {
+    try {
+        const MeetingId=parseInt(req.params.MeetingId);
+        const result = await deleteMeeting(MeetingId);
+        res.status(200).json(result);
+    } catch (err: any) {
+        if (err instanceof CustomError) {
+            res.status(err.statusCode).send(err.message);
+        } else {
+            res.status(500).send('Internal Server Error'+ err.message);
+        }
+    }
 });
 export default router;
