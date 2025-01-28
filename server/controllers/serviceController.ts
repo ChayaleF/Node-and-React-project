@@ -46,7 +46,7 @@ router.get('/getServices', async (req: Request, res: Response) => {
         }
     }
 });
-router.get('/deleteServiceById/:serviceId', async (req: Request, res: Response) => {
+router.delete('/deleteServiceById/:serviceId', async (req: Request, res: Response) => {
     try {
         const serviceId=parseInt(req.params.serviceId);
         const result = await deleteService(serviceId);
