@@ -1,9 +1,9 @@
-import { Services } from "../models/services";
+import { Service } from "../models/service";
 import sequelize from "../dataAccess/dataAccess";
 import { CustomError } from "../errors/CustomError";
 import { hasMinimumLetters, isValidServiceCost, isValidServiceDuration } from "../validators/validators";
 
-export async function addService(newService: Services) {
+export async function addService(newService: Service) {
 
     if (!newService.serviceName || !newService.serviceDescription || !newService.serviceCost || !newService.serviceDuration) {
         throw new CustomError('Missing required fields', 400);
@@ -18,16 +18,16 @@ export async function addService(newService: Services) {
         throw new CustomError('Service duration must be at least 10 minutes', 400);
     }
     await sequelize.authenticate();
-    await Services.sync();
+    await Service.sync();
 
-    const service = await Services.create({
+    const service = await Service.create({
         serviceName: newService.serviceName,
         serviceDescription: newService.serviceDescription,
         serviceCost: newService.serviceCost,
         serviceDuration: newService.serviceDuration
     });
 
-    const result = await Services.findByPk(service.id, {
+    const result = await Service.findByPk(service.id, {
         attributes: { exclude: ['createdAt', 'updatedAt'] }
     });
 
@@ -36,7 +36,7 @@ export async function addService(newService: Services) {
 
 
 
-export async function updateService(serviceId: number, updatedservice: Partial<Services>) {
+export async function updateService(serviceId: number, updatedservice: Partial<Service>) {
     if (!updatedservice.serviceName || !updatedservice.serviceDescription || !updatedservice.serviceCost || !updatedservice.serviceDuration) {
         throw new CustomError('Missing required fields', 400);
     }
@@ -49,7 +49,7 @@ export async function updateService(serviceId: number, updatedservice: Partial<S
     if (!isValidServiceDuration(updatedservice.serviceDuration)) {
         throw new CustomError('Service duration must be at least 10 minutes', 400);
     }
-    const service = await Services.findOne({
+    const service = await Service.findOne({
         where: { id: serviceId }
     });
 
@@ -67,14 +67,14 @@ export async function updateService(serviceId: number, updatedservice: Partial<S
 }
 
 export async function getServices() {
-    const services = await Services.findAll({
+    const services = await Service.findAll({
         attributes: { exclude: ['createdAt', 'updatedAt'] }
     });
     return services;
 }
 export async function deleteService(serviceId: number) {
 
-    const service = await Services.findByPk(serviceId);
+    const service = await Service.findByPk(serviceId);
 
     if (!service) {
         throw new CustomError('Service not found', 404);

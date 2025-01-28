@@ -1,14 +1,14 @@
 import { Model, DataTypes, INTEGER } from 'sequelize';
 import sequelize from '../dataAccess/dataAccess';
 import { User } from './user';
-import { Services } from './services';
-class Meetings extends Model {
+import { Service } from './service';
+class Meeting extends Model {
   public id!: number;
   public meetingDate!: Date;
   public userId!: number;
   public serviceId!:number;
 };
-Meetings.init({
+Meeting.init({
   id: {
     primaryKey: true,
     type: DataTypes.INTEGER,
@@ -36,8 +36,8 @@ Meetings.init({
     tableName: 'meetings',
   });
 
-Meetings.belongsTo(User, { foreignKey: 'custId' });
-Meetings.belongsTo(Services, { foreignKey: 'serviceId' });
-export { Meetings };
+Meeting.belongsTo(User, { foreignKey: 'custId' });
+Meeting.belongsTo(Service, { foreignKey: 'serviceId' });
+export { Meeting };
 
 

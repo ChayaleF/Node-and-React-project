@@ -1,13 +1,20 @@
-import { Meetings } from "../models/meetings";
+import { Meeting } from "../models/meeting";
 import sequelize from "../dataAccess/dataAccess";
 import { CustomError } from "../errors/CustomError";
-import { Services } from "../models/services";
+import { Service } from "../models/service";
 import { Op } from 'sequelize';
 import { User } from "../models/user";
 import { isValidMeetingDate } from "../validators/validators";
 
-export async function addMeeting(newMeeting: Meetings) {
-    const service = await Services.findByPk(newMeeting.serviceId);
+export async function getMeetings() {
+    const services = await Meeting.findAll({
+        attributes: { exclude: ['createdAt', 'updatedAt'] }
+    });
+    return services;
+}
+
+export async function addMeeting(newMeeting: Meeting) {
+    const service = await Service.findByPk(newMeeting.serviceId);
     if (!service) {
       throw new CustomError('Service with this Id not found',404);
     }
@@ -20,7 +27,7 @@ export async function addMeeting(newMeeting: Meetings) {
     const endTime = new Date(newMeeting.meetingDate);
     endTime.setMinutes(endTime.getMinutes() + service.serviceDuration);
 
-    const conflictingMeetings = await Meetings.findOne({
+    const conflictingMeetings = await Meeting.findOne({
       where: {
         meetingDate: {
           [Op.lt]: endTime,
@@ -33,15 +40,15 @@ export async function addMeeting(newMeeting: Meetings) {
       throw new CustomError('The selected time slot is already booked',409);
     }
     await sequelize.authenticate();
-    await Meetings.sync();
+    await Meeting.sync();
 
-    const meeting = await Meetings.create({
+    const meeting = await Meeting.create({
         meetingDate: newMeeting.meetingDate,
         userId: newMeeting.userId,
         serviceId:newMeeting.serviceId
     });
 
-    const result = await Meetings.findByPk(meeting.id, {
+    const result = await Meeting.findByPk(meeting.id, {
         attributes: { exclude: ['createdAt', 'updatedAt'] }
     });
 

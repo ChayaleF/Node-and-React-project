@@ -241,14 +241,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Services'
+              $ref: '#/components/schemas/Service'
       responses:
         '201':
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Services'
+                $ref: '#/components/schemas/Service'
 
   /services/updateService/{serviceId}:
     put:
@@ -266,14 +266,14 @@ paths:
         content:
           application/json:  
             schema:
-              $ref: '#/components/schemas/Services'
+              $ref: '#/components/schemas/Service'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Services'
+                $ref: '#/components/schemas/Service'
 
   /services/getServices:
     get:
@@ -288,7 +288,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Services'
+                  $ref: '#/components/schemas/Service'
 
   /services/deleteServiceById/{serviceId}:
     delete:
@@ -311,6 +311,31 @@ paths:
                 properties:
                   message:
                     type: string
+  /meetings/getMeetings:
+    get:
+      summary: Get all meetings
+      tags:
+        - Meeting
+      description: Retrieve a list of all meetings in the system.
+      responses:
+        '200':
+          description: A list of meetings was successfully retrieved.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meeting'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Internal Server Error
 
   /meetings/addMeeting:
     post:
@@ -369,7 +394,7 @@ components:
         - businessEmail
         - businessPhone
 
-    Services:
+    Service:
       type: object
       properties:
         id:
@@ -388,7 +413,7 @@ components:
         - serviceCost
         - serviceDuration
 
-    Meetings:
+    Meeting:
       type: object
       properties:
         id:
