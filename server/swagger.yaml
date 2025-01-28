@@ -315,7 +315,7 @@ paths:
     get:
       summary: Get all meetings
       tags:
-        - Meeting
+        - Meetings
       description: Retrieve a list of all meetings in the system.
       responses:
         '200':
@@ -341,7 +341,7 @@ paths:
     post:
       summary: Add a new meeting
       tags:
-        - Meeting
+        - Meetings
       requestBody:
         required: true
         content:
@@ -351,6 +351,30 @@ paths:
       responses:
         '201':
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+  /meetings/updateMeeting/{meetingId}:
+    put:
+      summary: Update an existing meeting
+      tags:
+        - Meetings
+      parameters:
+        - name: meetingId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:  
+            schema:
+              $ref: '#/components/schemas/Meeting'
+      responses:
+        '200':
+          description: OK
           content:
             application/json:
               schema:
