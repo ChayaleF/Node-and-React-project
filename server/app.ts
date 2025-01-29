@@ -6,6 +6,7 @@ import usersController from './controllers/usersController';
 import businessController from './controllers/businessController';
 import servicesController from './controllers/serviceController'
 import meetingsController from './controllers/meetingsController';
+import { verifyToken } from './middlewares/verifyTokenMiddleware';
 dotenv.config()
 const port=process.env.PORT||8000
 const app= express();
@@ -14,7 +15,12 @@ app.use(express.json());
 //   console.log('Database & tables created!');
 // });
 setupSwagger(app);
+// app.use('/signUp', usersController);
+// app.use('/login', usersController);
 app.use('/users', usersController);
+
+app.use(verifyToken);
+
 app.use('/business', businessController);
 app.use('/services', servicesController);
 app.use('/meetings', meetingsController);

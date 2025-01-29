@@ -84,7 +84,7 @@ export async function login(loginEmail:string, loginPassword:string) {
         }
     );
 
-    await User.update({ token: newToken }, {
+    await User.update({ userToken: newToken }, {
         where: { id: foundUser.id }
     });
 
